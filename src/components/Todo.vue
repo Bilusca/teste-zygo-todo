@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p v-if="!isEdit">{{ todo.title }}</p>
+    <p v-if="!isEdit">{{ title }}</p>
     <input
       v-if="isEdit"
       :value="title"

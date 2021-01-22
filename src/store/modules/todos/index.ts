@@ -2,7 +2,7 @@ import TodoInterface from "@/interfaces/Todo";
 import TodoService from "@/services/todo.service";
 import store from "@/store";
 import getId from "@/utils/get-id";
-import { findIndex, forEach, has, maxBy } from "lodash";
+import { findIndex, forEach, maxBy } from "lodash";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 
 @Module({ store, namespaced: true })
@@ -54,7 +54,14 @@ class Todos extends VuexModule {
   @Action
   public async postTodo(title: string): Promise<void> {
     const max: TodoInterface | undefined = maxBy(this.todos, "order");
-    const newOrder = has(max, "order") ? max.order + 1 : 1;
+
+    let newOrder: number;
+
+    if (typeof max === "object") {
+      newOrder = max?.order + 1;
+    } else {
+      newOrder = 1;
+    }
 
     const { data } = await this.todoService.postTodo({
       title,
