@@ -1,18 +1,22 @@
 import TodoInterface from "@/interfaces/Todo";
+import {
+  getStorageTodos,
+  saveStorageTodos
+} from "@/services/localstorage.service";
 import TodoService from "@/services/todo.service";
 import store from "@/store";
 import getId from "@/utils/get-id";
-import { findIndex, forEach, maxBy } from "lodash";
+import { findIndex, forEach, maxBy, orderBy } from "lodash";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 
 @Module({ store, namespaced: true })
 class Todos extends VuexModule {
   private todoService = new TodoService();
-  public todos: TodoInterface[] = [];
+  public todos: TodoInterface[] = getStorageTodos();
 
   @Mutation
   public GET_TODOS(todos: TodoInterface[]): void {
-    this.todos = todos;
+    this.todos = orderBy(todos, "order");
   }
 
   @Mutation
@@ -24,7 +28,7 @@ class Todos extends VuexModule {
   public SET_COMPLETED_TODO(todo: TodoInterface): void {
     const todoIndex = findIndex(this.todos, { order: todo.order });
 
-    this.todos[todoIndex].completed = true;
+    this.todos[todoIndex].completed = todo.completed;
   }
 
   @Mutation
@@ -49,6 +53,7 @@ class Todos extends VuexModule {
     const { data } = await this.todoService.getTodos();
 
     this.context.commit("GET_TODOS", data);
+    this.context.dispatch("saveOnStorage");
   }
 
   @Action
@@ -69,6 +74,7 @@ class Todos extends VuexModule {
     });
 
     this.context.commit("POST_TODO", data);
+    this.context.dispatch("saveOnStorage");
   }
 
   @Action
@@ -76,12 +82,13 @@ class Todos extends VuexModule {
     const id = getId(todo.url);
 
     const { data } = await this.todoService.editTodo(id, {
-      completed: true,
+      completed: !todo.completed,
       title: todo.title,
       order: todo.order
     });
 
     this.context.commit("SET_COMPLETED_TODO", data);
+    this.context.dispatch("saveOnStorage");
   }
 
   @Action
@@ -91,6 +98,7 @@ class Todos extends VuexModule {
     const { data } = await this.todoService.deleteTodo(id);
 
     this.context.commit("DELETE_TODO", data);
+    this.context.dispatch("saveOnStorage");
   }
 
   @Action
@@ -122,6 +130,11 @@ class Todos extends VuexModule {
 
     this.context.commit("EDIT_TODO", data);
     this.context.dispatch("getTodos");
+  }
+
+  @Action
+  public saveOnStorage(): void {
+    saveStorageTodos(this.todos);
   }
 }
 
