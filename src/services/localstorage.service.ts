@@ -1,4 +1,5 @@
 import TodoInterface from "@/interfaces/Todo";
+import { orderBy } from "lodash";
 
 const STORAGE_KEY = "todos:zygo";
 
@@ -11,7 +12,7 @@ export const getStorageTodos = (): TodoInterface[] | [] => {
 
   if (items) {
     const todos = JSON.parse(items);
-    return todos;
+    return orderBy(todos, "order");
   }
 
   return [];

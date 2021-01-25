@@ -1,32 +1,27 @@
 module.exports = {
+  chainWebpack: config => {
+    config.plugin("html").tap(args => {
+      args[0].title = "Organizador de Tarefas - ZYGO";
+      return args;
+    });
+  },
   pwa: {
     name: "Organizador de tarefas - ZYGO",
     themeColor: "#892cdc",
     msTileColor: "#892cdc",
     appleMobileWebAppCache: "yes",
+    workboxPluginMode: "GenerateSW",
     manifestOptions: {
       name: "Organizador de tarefas - ZYGO",
       shortName: "TODO - ZYGO",
       backgroundColor: "#892cdc",
       display: "standalone",
-      startUrl: "index.html"
+      scope: "/",
+      startUrl: "/"
     },
     workboxOptions: {
-      skipWaiting: true,
-      clientsClaim: true,
-      setConfig: {
-        debug: true
-      },
-      runtimeCaching: [
-        {
-          urlPattern: ({ url }) => url.pathname == "/",
-          method: "GET",
-          handler: "StaleWhileRevalidate",
-          options: {
-            cacheName: "myAppCache"
-          }
-        }
-      ]
+      navigateFallback: "/index.html",
+      skipWaiting: true
     }
   }
 };
