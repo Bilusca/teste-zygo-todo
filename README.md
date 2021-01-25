@@ -1,23 +1,22 @@
-# teste-zygo
+# Todo List - ZYGO
 
-## Project setup
+## Propósito
+
+A ideia do projeto é fazer um TODO list, consumindo uma API em Node, e persistindo os dados no LocalStorage. As tarefas cadastradas deverá ser separadas por completas e incompletas, podendo editar e deletar as tarefas.
+
+## Setup do projeto
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Rodando o servidor
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
+### Build do projeto
 ```
 yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
 ```
 
 ### Lints and fixes files
@@ -25,5 +24,3 @@ yarn test:unit
 yarn lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
