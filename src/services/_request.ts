@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 const server: AxiosInstance = axios.create({
-  baseURL: "http://todo-backend-express.herokuapp.com/"
+  baseURL: "https://todo-backend-express.herokuapp.com/"
 });
 
 export default server;

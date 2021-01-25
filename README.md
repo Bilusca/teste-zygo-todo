@@ -1,5 +1,7 @@
 # Todo List - ZYGO
 
+[Site do projeto](https://todozygo.netlify.app/)
+
 ## Propósito
 
 A ideia do projeto é fazer um TODO list, consumindo uma API em Node, e persistindo os dados no LocalStorage. As tarefas cadastradas deverá ser separadas por completas e incompletas, podendo editar e deletar as tarefas.
